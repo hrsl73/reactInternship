@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import ProvidersPage from "./ProvidersPage";
+import MainPage from "./MainPage";
 function App() {
   return (
     <>
       <div className="apiList">
-        <ProvidersPage/>
+        <MainPage/>
 
       </div>
     </>
