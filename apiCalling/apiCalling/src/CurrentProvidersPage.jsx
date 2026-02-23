@@ -1,24 +1,57 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
+function CurrentProvidersPage({ provider }) {
 
-function CurrentProvidersPage(){
+    const [providerDetails, setProviderDetails] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const [currProvider, setCurrprovider] = useState([])
-    const [loading, setLoading] = useState(false)
-
-        useEffect(() => {
-            fetch("https://api.apis.guru/v2/{provider_name}.json")
-            .then((response) => response.json())
-            .then((data) => {
-                const providersArray = Object.values(data.data);
-                setProviders(providersArray);
+    useEffect(() => {
+        fetch(`https://api.apis.guru/v2/${provider}.json`)
+            .then(res => res.json())
+            .then(data => {
+                setProviderDetails(data);
                 setLoading(false);
+                console.log("Fetched inside CurrentProvidersPage:", data);
             })
-            .catch((error) => {
-            console.error("Error fetching providers:", error);
+            .catch(err => {
+                console.error(err);
                 setLoading(false);
             });
-        }, []);
+    }, [provider]);
 
+    if (loading) return <p className="text-center mt-4">Loading details...</p>;
+
+    return (
+        <div className="mt-6 bg-white text-black p-4 rounded">
+            <h2 className="text-xl font-bold mb-2">
+                Details of {provider}
+            </h2>
+
+            {providerDetails?.apis &&
+                Object.entries(providerDetails.apis).map(([apiName, apiData]) => (
+                    <div key={apiName} className="mb-6 p-4 border rounded bg-gray-100">
+                    <h3 className="text-lg font-bold">{apiData.info.title}</h3>
+
+                    <p className="text-sm text-gray-600">
+                        Version: {apiData.info.version}
+                    </p>
+
+                    <p className="mt-2">
+                        Description: {apiData.info.description}
+                    </p>
+
+                    <p className="mt-2">
+                        OpenAPI Version: {apiData.openapiVer}
+                    </p>
+
+                    <a href={apiData.info.contact.url} target="_blank" rel="noreferrer" className="underline hover:text-purple-700">
+                            Visit Site
+                    </a>
+                    </div>
+                ))}
+            {console.log(providerDetails)}
+        </div>
+    );
 }
-export default CurrentProvidersPage
+
+export default CurrentProvidersPage;
