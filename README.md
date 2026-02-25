@@ -6,8 +6,8 @@ npm install tailwindcss @tailwindcss/vite
 ```
 
 2️⃣ Update vite.config.js
-```js
 Import Tailwind plugin:
+```js
 import tailwindcss from '@tailwindcss/vite'
 ```
 Add it inside plugins:
@@ -38,5 +38,5 @@ export default defineConfig({
 
 Add inside the <head> tag:
 ```html
-<link href="/src/style.css" rel="stylesheet">
+<link href="/src/index.css" rel="stylesheet">
 ```
